@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Text, View, TouchableOpacity } from "react-native";
 import Moment from "moment";
 function App() {
   const [isLoading, setLoading] = useState(true);
@@ -13,6 +13,14 @@ function App() {
       .finally(() => setLoading(false));
   }, []);
 
+  // DELETE request using fetch with async/await
+  async function deleteScooter(id) {
+    await fetch("http://192.168.50.19:3000/users/" + id, { method: "DELETE" });
+    setStatus("Delete successful");
+  }
+
+  // empty dependency array means this effect will only run once (like componentDidMount in classes)
+
   function dateFormat(variable) {
     var dateTime = variable;
     return Moment(dateTime).format("DD-MM-YYYY"); //basically you can do all sorts of the formatting and others
@@ -23,51 +31,37 @@ function App() {
       {isLoading ? (
         <Text>Chargement...</Text>
       ) : (
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 14,
-              color: "green",
-              textAlign: "center",
-              paddingBottom: 10,
-            }}
-          >
-            En cours de réparation:
-          </Text>
+        <View>
           <FlatList
             data={data}
             keyExtractor={({ id }, index) => id}
             renderItem={({ item }) => (
-              <Text>
-                {item.identifiant +
-                  " : " +
-                  item.modele +
-                  " : " +
-                  dateFormat(item.date_entree)}
-              </Text>
-            )}
-          />
-          <Text
-            style={{
-              fontSize: 14,
-              color: "green",
-              textAlign: "center",
-              paddingBottom: 10,
-            }}
-          >
-            Prêts à être exportés:
-          </Text>
-          <FlatList
-            data={data}
-            keyExtractor={({ id }, index) => id}
-            renderItem={({ item }) => (
-              <Text>{item.name + " : " + item.email}</Text>
+              <View
+                style={{
+                  backgroundColor: "grey",
+                  padding: 15,
+                  margin: 5,
+                  borderWidth: 2,
+                }}
+              >
+                <Text>{item.identifiant}</Text>
+                <Text style={{ flex: 1, justifyContent: "flex-end" }}>
+                  {dateFormat(item.date_entree)}
+                </Text>
+                <Text>{item.modele}</Text>
+                <TouchableOpacity onPress={() => deleteScooter(item.id)}>
+                  <Text
+                    style={{
+                      backgroundColor: "grey",
+                      padding: 2,
+                      margin: 2,
+                      borderWidth: 2,
+                    }}
+                  >
+                    -
+                  </Text>
+                </TouchableOpacity>
+              </View>
             )}
           />
         </View>
