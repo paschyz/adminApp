@@ -22,16 +22,17 @@ function Dashboard() {
   const [clicked, setClicked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [model, setModel] = useState("");
+  const FETCH_URL = "http://192.168.50.19:3000/users/";
   useEffect(() => {
     const getData = async () => {
-      const apiResponse = await fetch("http://192.168.50.19:3000/users");
+      const apiResponse = await fetch(FETCH_URL);
       const data = await apiResponse.json();
       setData(data);
     };
     getData();
   }, []);
   async function postScooter(modelParam) {
-    await fetch("http://192.168.50.19:3000/users", {
+    await fetch(FETCH_URL, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -46,7 +47,7 @@ function Dashboard() {
       });
 
     const getData = async () => {
-      const apiResponse = await fetch("http://192.168.50.19:3000/users");
+      const apiResponse = await fetch(FETCH_URL);
       const data = await apiResponse.json();
       setData(data);
     };

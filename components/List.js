@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Moment from "moment";
+const FETCH_URL = "http://192.168.50.19:3000/users/";
 function dateFormat(variable) {
   var dateTime = variable;
   return Moment(dateTime).format("DD-MM-YYYY"); //basically you can do all sorts of the formatting and others
@@ -16,7 +17,7 @@ function dateFormat(variable) {
 // definition of the Item, which will be rendered in the FlatList
 const Item = ({ name, details, date, itemId, setData, data }) => {
   async function deleteScooter(id) {
-    await fetch("http://192.168.50.19:3000/users/" + id, { method: "DELETE" });
+    await fetch(FETCH_URL + id, { method: "DELETE" });
     setData(data.filter((item) => item.id != id));
   }
   return (
