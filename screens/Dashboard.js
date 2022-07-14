@@ -27,10 +27,24 @@ function Dashboard() {
     getData();
   }, []);
 
-  // DELETE request using fetch with async/await
-  async function deleteScooter(id) {
-    await fetch("http://192.168.50.19:3000/users/" + id, { method: "DELETE" });
-  }
+  fetch("http://192.168.50.19:3000/users", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "test",
+    }),
+  })
+    .then((response) => response.json())
+    .then((responseJson) => {
+      //Showing response message coming from serverconsole.warn(responseJson);
+    })
+    .catch((error) => {
+      //display error message
+      console.warn(error);
+    });
 
   // empty dependency array means this effect will only run once (like componentDidMount in classes)
 
@@ -54,7 +68,17 @@ function Dashboard() {
         clicked={clicked}
         setClicked={setClicked}
       />
-      {<List searchPhrase={searchPhrase} data={data} setClicked={setClicked} />}
+      {
+        <List
+          setData={setData}
+          searchPhrase={searchPhrase}
+          data={data}
+          setClicked={setClicked}
+        />
+      }
+      <TouchableOpacity onPress={handleSignOut}>
+        <Text>Sign out</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

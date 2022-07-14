@@ -1,37 +1,44 @@
 const Pool = require("pg").Pool;
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "api",
-  password: "root",
+  user: "practiceadmin@practicephoenixazure",
+  host: "practicephoenixazure.postgres.database.azure.com",
+  database: "easy_scooter",
+  password: "Respons11",
   port: 5432,
 });
 const getUsers = (request, response) => {
-  pool.query("SELECT * FROM scooters ORDER BY id ASC", (error, results) => {
-    if (error) {
-      throw error;
+  pool.query(
+    "SELECT * FROM scooter_maintenance ORDER BY id ASC",
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).json(results.rows);
     }
-    response.status(200).json(results.rows);
-  });
+  );
 };
 
 const getUserById = (request, response) => {
   const id = parseInt(request.params.id);
 
-  pool.query("SELECT * FROM scooters WHERE id = $1", [id], (error, results) => {
-    if (error) {
-      throw error;
+  pool.query(
+    "SELECT * FROM scooter_maintenance WHERE id = $1",
+    [id],
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).json(results.rows);
     }
-    response.status(200).json(results.rows);
-  });
+  );
 };
 
 const createUser = (request, response) => {
-  const { identifiant, modele } = request.body;
+  const { model } = request.body;
 
   pool.query(
-    "INSERT INTO scooters (identifiant, modele) VALUES ($1, $2)",
-    [identifiant, modele],
+    "INSERT INTO scooter_maintenance (model) VALUES ($1)",
+    [model],
     (error, results) => {
       if (error) {
         throw error;
@@ -46,7 +53,7 @@ const updateUser = (request, response) => {
   const { identifiant, modele } = request.body;
 
   pool.query(
-    "UPDATE scooters SET identifiant = $1, modele = $2 WHERE id = $3",
+    "UPDATE scooter_maintenance SET identifiant = $1, modele = $2 WHERE id = $3",
     [identifiant, modele, id],
     (error, results) => {
       if (error) {
@@ -60,12 +67,16 @@ const updateUser = (request, response) => {
 const deleteUser = (request, response) => {
   const id = parseInt(request.params.id);
 
-  pool.query("DELETE FROM scooters WHERE id = $1", [id], (error, results) => {
-    if (error) {
-      throw error;
+  pool.query(
+    "DELETE FROM scooter_maintenance WHERE id = $1",
+    [id],
+    (error, results) => {
+      if (error) {
+        throw error;
+      }
+      response.status(200).send(`User deleted with ID: ${id}`);
     }
-    response.status(200).send(`User deleted with ID: ${id}`);
-  });
+  );
 };
 
 module.exports = {
