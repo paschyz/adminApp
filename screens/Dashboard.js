@@ -1,18 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, Text, View, TouchableOpacity } from "react-native";
+import {
+  FlatList,
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from "react-native";
+import List from "../components/List";
+import SearchBar from "../components/SearchBar";
 import Moment from "moment";
 import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 function Dashboard() {
-  const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const navigation = useNavigation();
+  const [searchPhrase, setSearchPhrase] = useState("");
+  const [clicked, setClicked] = useState(false);
+
   useEffect(() => {
-    fetch("http://192.168.50.19:3000/users")
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => console.error(error))
-      .finally(() => setLoading(false));
+    const getData = async () => {
+      const apiResponse = await fetch("http://192.168.50.19:3000/users");
+      const data = await apiResponse.json();
+      setData(data);
+    };
+    getData();
   }, []);
 
   // DELETE request using fetch with async/await
@@ -35,51 +47,29 @@ function Dashboard() {
       .catch((error) => alert(error.message));
   };
   return (
-    <View style={{ flex: 1, padding: 24 }}>
-      {isLoading ? (
-        <Text>Chargement...</Text>
-      ) : (
-        <View>
-          <FlatList
-            data={data}
-            keyExtractor={({ id }, index) => id}
-            renderItem={({ item }) => (
-              <View
-                style={{
-                  backgroundColor: "grey",
-                  padding: 15,
-                  margin: 5,
-                  borderWidth: 2,
-                }}
-              >
-                <Text>{item.identifiant}</Text>
-                <Text style={{ flex: 1, justifyContent: "flex-end" }}>
-                  {dateFormat(item.date_entree)}
-                </Text>
-                <Text>{item.modele}</Text>
-                <TouchableOpacity onPress={() => deleteScooter(item.id)}>
-                  <Text
-                    style={{
-                      backgroundColor: "grey",
-                      padding: 2,
-                      margin: 2,
-                      borderWidth: 2,
-                    }}
-                  >
-                    -
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          />
-        </View>
-      )}
-      <View>
-        <TouchableOpacity onPress={handleSignOut}>
-          <Text>Sign out</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    <SafeAreaView style={styles.root}>
+      <SearchBar
+        searchPhrase={searchPhrase}
+        setSearchPhrase={setSearchPhrase}
+        clicked={clicked}
+        setClicked={setClicked}
+      />
+      {<List searchPhrase={searchPhrase} data={data} setClicked={setClicked} />}
+    </SafeAreaView>
   );
 }
 export default Dashboard;
+const styles = StyleSheet.create({
+  root: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "50px",
+  },
+  title: {
+    width: "100%",
+    marginTop: 20,
+    fontSize: 25,
+    fontWeight: "bold",
+    marginLeft: "10%",
+  },
+});
