@@ -16,7 +16,6 @@ function App() {
   // DELETE request using fetch with async/await
   async function deleteScooter(id) {
     await fetch("http://192.168.50.19:3000/users/" + id, { method: "DELETE" });
-    setStatus("Delete successful");
   }
 
   // empty dependency array means this effect will only run once (like componentDidMount in classes)
