@@ -31,7 +31,7 @@ function Dashboard() {
     getData();
   }, []);
   async function postScooter(modelParam) {
-    fetch("http://192.168.50.19:3000/users", {
+    await fetch("http://192.168.50.19:3000/users", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -44,7 +44,7 @@ function Dashboard() {
       .catch((error) => {
         console.warn(error);
       });
-    console.log(model);
+
     const getData = async () => {
       const apiResponse = await fetch("http://192.168.50.19:3000/users");
       const data = await apiResponse.json();
@@ -65,13 +65,16 @@ function Dashboard() {
   };
   return (
     <SafeAreaView style={styles.root}>
-      <Text>Connecté avec : {auth.currentUser?.email}</Text>
-      <TouchableOpacity
-        onPress={handleSignOut}
-        style={[styles.button, styles.buttonClose]}
-      >
-        <Text>Se déconnecter</Text>
-      </TouchableOpacity>
+      <SearchBar
+        searchPhrase={searchPhrase}
+        setSearchPhrase={setSearchPhrase}
+        clicked={clicked}
+        setClicked={setClicked}
+      />
+      <Text style={[styles.connecte]}>
+        Connecté avec : {auth.currentUser?.email}
+      </Text>
+
       <Modal
         animationType="slide"
         transparent={true}
@@ -91,12 +94,18 @@ function Dashboard() {
             />
             <TouchableOpacity
               onPress={() => postScooter(model)}
-              style={(styles.button, styles.buttonClose)}
+              style={{
+                borderRadius: 20,
+                padding: 10,
+                elevation: 2,
+                marginBottom: "10px",
+                backgroundColor: "#2196F3",
+              }}
             >
               <Text style={styles.textStyle}>Créer</Text>
             </TouchableOpacity>
             <Pressable
-              style={[styles.button, styles.buttonClose]}
+              style={[styles.button, styles.buttonOpen]}
               onPress={() => setModalVisible(!modalVisible)}
             >
               <Text style={styles.textStyle}>Fermer</Text>
@@ -110,20 +119,19 @@ function Dashboard() {
       >
         <Text style={styles.textStyle}>Enregistrer un scooter</Text>
       </Pressable>
-      <SearchBar
+      <TouchableOpacity
+        onPress={handleSignOut}
+        style={[styles.button, styles.buttonClose]}
+      >
+        <Text style={styles.textStyle}>Se déconnecter</Text>
+      </TouchableOpacity>
+
+      <List
+        setData={setData}
         searchPhrase={searchPhrase}
-        setSearchPhrase={setSearchPhrase}
-        clicked={clicked}
+        data={data}
         setClicked={setClicked}
       />
-      {
-        <List
-          setData={setData}
-          searchPhrase={searchPhrase}
-          data={data}
-          setClicked={setClicked}
-        />
-      }
     </SafeAreaView>
   );
 }
@@ -134,12 +142,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: "100px",
   },
+
+  connecte: {
+    margin: "10px",
+  },
   input: {
     backgroundColor: "white",
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
     marginTop: 5,
+    marginBottom: "20px",
     borderColor: "black",
   },
   title: {
@@ -168,6 +181,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    marginBottom: "10px",
   },
   buttonOpen: {
     backgroundColor: "#F194FF",

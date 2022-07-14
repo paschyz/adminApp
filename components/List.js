@@ -20,7 +20,7 @@ const Item = ({ name, details, date, itemId, setData, data }) => {
     setData(data.filter((item) => item.id != id));
   }
   return (
-    <View style={}>
+    <View style={styles.item}>
       <Text style={styles.title}>{name}</Text>
       <Text style={styles.details}>{details}</Text>
       <Text style={styles.details}>{dateFormat(date)}</Text>
