@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  FlatList,
   Text,
   TextInput,
   View,
@@ -53,8 +52,6 @@ function Dashboard() {
     };
     getData();
   }
-
-  // empty dependency array means this effect will only run once (like componentDidMount in classes)
 
   const handleSignOut = () => {
     auth

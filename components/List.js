@@ -1,4 +1,3 @@
-// List.js
 import React from "react";
 import {
   StyleSheet,
@@ -12,9 +11,9 @@ import Moment from "moment";
 
 function dateFormat(variable) {
   var dateTime = variable;
-  return Moment(dateTime).format("DD-MM-YYYY"); //basically you can do all sorts of the formatting and others
+  return Moment(dateTime).format("DD-MM-YYYY");
 }
-// definition of the Item, which will be rendered in the FlatList
+
 const Item = ({ name, details, date, itemId, setData, data }) => {
   return (
     <View style={styles.item}>
@@ -37,10 +36,8 @@ const Item = ({ name, details, date, itemId, setData, data }) => {
   );
 };
 
-// the filter
 const List = ({ searchPhrase, setClicked, data, setData }) => {
   const renderItem = ({ item }) => {
-    // when no input, show all
     if (searchPhrase === "") {
       return (
         <Item
@@ -53,7 +50,7 @@ const List = ({ searchPhrase, setClicked, data, setData }) => {
         />
       );
     }
-    // filter of the name
+
     if (
       item.code
         .toUpperCase()
@@ -70,7 +67,7 @@ const List = ({ searchPhrase, setClicked, data, setData }) => {
         />
       );
     }
-    // filter of the description
+
     if (
       item.model
         .toUpperCase()

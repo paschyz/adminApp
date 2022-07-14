@@ -1,4 +1,3 @@
-// SearchBar.js
 import React from "react";
 import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
@@ -11,14 +10,14 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
           clicked ? styles.searchBar__clicked : styles.searchBar__unclicked
         }
       >
-        {/* search Icon */}
+        {/* Icône*/}
         <Feather
           name="search"
           size={20}
           color="black"
           style={{ marginLeft: 1 }}
         />
-        {/* Input field */}
+        {}
         <TextInput
           style={styles.input}
           placeholder="Rechercher"
@@ -28,7 +27,7 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
             setClicked(true);
           }}
         />
-        {/* cross Icon, depending on whether the search bar is clicked or not */}
+        {/* affiche une croix si clic enregistré */}
         {clicked && (
           <Entypo
             name="cross"
@@ -41,7 +40,7 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
           />
         )}
       </View>
-      {/* cancel button, depending on whether the search bar is clicked or not */}
+      {/* Bouton annuler */}
       {clicked && (
         <View>
           <Button
@@ -58,7 +57,6 @@ const SearchBar = ({ clicked, searchPhrase, setSearchPhrase, setClicked }) => {
 };
 export default SearchBar;
 
-// styles
 const styles = StyleSheet.create({
   container: {
     margin: 15,
