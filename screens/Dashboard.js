@@ -22,7 +22,7 @@ function Dashboard() {
   const [clicked, setClicked] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [model, setModel] = useState("");
-  const FETCH_URL = "http://192.168.50.19:3000/users/";
+  const FETCH_URL = "http://192.168.50.94:3000/users/";
   useEffect(() => {
     const getData = async () => {
       const apiResponse = await fetch(FETCH_URL);
