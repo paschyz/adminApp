@@ -8,9 +8,13 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-
+import Moment from "moment";
+function dateFormat(variable) {
+  var dateTime = variable;
+  return Moment(dateTime).format("DD-MM-YYYY"); //basically you can do all sorts of the formatting and others
+}
 // definition of the Item, which will be rendered in the FlatList
-const Item = ({ name, details, itemId, setData, data }) => {
+const Item = ({ name, details, date, itemId, setData, data }) => {
   async function deleteScooter(id) {
     await fetch("http://192.168.50.19:3000/users/" + id, { method: "DELETE" });
     setData(data.filter((item) => item.id != id));
@@ -19,6 +23,7 @@ const Item = ({ name, details, itemId, setData, data }) => {
     <View style={styles.item}>
       <Text style={styles.title}>{name}</Text>
       <Text style={styles.details}>{details}</Text>
+      <Text style={styles.details}>{dateFormat(date)}</Text>
       <TouchableOpacity onPress={() => deleteScooter(itemId)}>
         <Text
           style={{
@@ -44,6 +49,7 @@ const List = ({ searchPhrase, setClicked, data, setData }) => {
         <Item
           name={item.code}
           details={item.model}
+          date={item.started_at}
           itemId={item.id}
           setData={setData}
           data={data}
@@ -52,7 +58,7 @@ const List = ({ searchPhrase, setClicked, data, setData }) => {
     }
     // filter of the name
     if (
-      item.identifiant
+      item.code
         .toUpperCase()
         .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ""))
     ) {
@@ -60,6 +66,7 @@ const List = ({ searchPhrase, setClicked, data, setData }) => {
         <Item
           name={item.code}
           details={item.model}
+          date={item.started_at}
           itemId={item.id}
           setData={setData}
           data={data}
@@ -68,7 +75,7 @@ const List = ({ searchPhrase, setClicked, data, setData }) => {
     }
     // filter of the description
     if (
-      item.modele
+      item.model
         .toUpperCase()
         .includes(searchPhrase.toUpperCase().trim().replace(/\s/g, ""))
     ) {
@@ -76,6 +83,7 @@ const List = ({ searchPhrase, setClicked, data, setData }) => {
         <Item
           name={item.code}
           details={item.model}
+          date={item.started_at}
           itemId={item.id}
           setData={setData}
           data={data}
